@@ -149,8 +149,8 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 .lead-h { font-size: var(--t-l); line-height: 1.15; letter-spacing: -0.015em; font-weight: 400; max-width: 22ch; }
 .lead-h .two { color: var(--shade); }
 .lead { margin-top: clamp(40px, 5vw, 64px); display: grid; gap: 0 40px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 680px) { .lead { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1200px) { .lead { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 680px) and (max-width: 1099px) { .lead { grid-template-columns: repeat(2, minmax(0, 1fr)); } .lead > div:last-child { grid-column: 1 / -1; } }
+@media (min-width: 1100px) { .lead { grid-template-columns: repeat(6, minmax(0, 1fr)); } .lead > div { grid-column: span 2; } .lead > div:nth-child(-n+2) { grid-column: span 3; } }
 .lead > div { border-top: 1px solid var(--rule-d); padding-block: 22px 32px; }
 .lead b { display: block; font-weight: 300; font-size: var(--t-l); letter-spacing: -0.02em; line-height: 1.1; color: var(--paper); }
 .lead h3 { font-size: var(--t-s); font-weight: 500; margin-top: 14px; color: var(--paper); }
@@ -178,7 +178,7 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 @media (min-width: 1000px) { .case { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 60rem; } }
 @media (min-width: 1200px) { .case { min-height: 51rem; } }
 @media (min-width: 1280px) { .case { min-height: 46rem; } }
-@media (min-width: 1400px) { .case { min-height: 43rem; } }
+@media (min-width: 1400px) { .case { min-height: 44rem; } }
 .case[data-anim] .case-text, .case[data-anim] .case-vis { animation: swap 520ms var(--ease-out) backwards; }
 .case[data-anim] .case-vis { animation-delay: 70ms; }
 @keyframes swap { from { opacity: 0; transform: translateY(10px); filter: blur(3px); } }
@@ -375,6 +375,7 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
           <div><b>50+ loops</b><h3>Certified Bar Raiser</h3><p>Selected into Amazon's company-wide interview-quality program, with effective veto authority on hiring decisions.</p></div>
           <div><b>Sign-off</b><h3>Certified security reviewer</h3><p>I threat-model and certify designs for applications that handle personal data.</p></div>
           <div><b>56–60%</b><h3>GenAI enablement series</h3><p>Founded an org-wide series that reached over half the org, and reported adoption analytics to senior leadership.</p></div>
+          <div><b>1 fix, every team</b><h3>Privacy catch</h3><p>Spotted a customer-privacy exposure during an org-wide launch review, then shipped a reusable fix that closed it for every team on the platform.</p></div>
           <div><b>5 → 1</b><h3>Pilot playbook</h3><p>Turned five production postmortems into the org's pilot SOP: kill-switch thresholds, alarm tiers, time-boxed rollback.</p></div>
         </div>
       </div>
@@ -631,7 +632,7 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
         ['Problem', 'Agents needed to reason over a 200+ workflow decision engine whose APIs were built for people: two or three round-trips per question and 100KB graph payloads.'],
         ['Constraint', 'Every byte an agent reads is context it can no longer use. Auth already existed in another MCP server.'],
         ['Decision', 'Shape tools around the questions agents ask, not the endpoints we had: 9 composite tools, responses compressed to five-line summaries, and auth delegated to the existing server over stdio instead of rebuilt.'],
-        ['Trade-off', 'Composite tools are less general than one wrapper per endpoint. I took a narrower surface for cheaper calls and fewer ways for a model to misuse it.'],
+        ['Trade-off', 'Composite tools are less general than one wrapper per endpoint. I took a narrower surface in exchange for fewer round-trips and less context spent per call.'],
       ],
       facts: [['9', 'composite tools'], ['100KB → 5 lines', 'per response'], ['99 → 45', 'lines of auth code']],
       vis: () => term([
@@ -651,12 +652,12 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
       when: '2024 · Fulfillment Technology',
       title: 'Packaging certification, moved from manual inspection to an image pipeline.',
       rec: [
-        ['Problem', 'Whether a product can ship in its own box was decided by manual inspection, across 7.2M tests a year.'],
-        ['Constraint', '100K+ workflows a day at sub-second p99, from station hardware that retries and sends duplicates.'],
+        ['Problem', 'Whether a product can ship in its own box was decided by manual inspection, millions of times a year.'],
+        ['Constraint', 'High daily volume at sub-second p99, and any hop can deliver the same message twice.'],
         ['Decision', 'Tech-led four engineers on an image-capture pipeline: pre-signed S3 uploads, a queue between intake and decision, idempotency keys on every hop, TTL on every record.'],
         ['Trade-off', 'The queue adds a hop and more moving parts. In return, bursts are absorbed and every retry is safe.'],
       ],
-      facts: [['100K+', 'workflows a day'], ['7.2M', 'tests a year'], ['−56%', 'cost per test'], ['+173%', 'operator throughput']],
+      facts: [['Sub-second', 'p99'], ['−56%', 'cost per test'], ['+173%', 'operator throughput']],
       vis: () => `<div class="flow">${[
         ['capture', 'Station camera', 'image + test id'],
         ['S3', 'Pre-signed upload', 'no proxy hop'],
@@ -673,7 +674,7 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
         ['Problem', '20+ client teams needed signals from S3, SNS and polled APIs. Each new source took three weeks.'],
         ['Constraint', 'A tier-1 service at 10K TPS, so teams cannot each fork it or patch it in place.'],
         ['Decision', 'Three layers with pluggable source interfaces. A new source is an implementation of an interface, not a change to the service.'],
-        ['Trade-off', 'The abstraction cost time before the second source existed. It paid back as onboarding fell from three weeks to four days.'],
+        ['Trade-off', 'Pluggable interfaces meant more design work up front. It paid back as onboarding fell from three weeks to four days.'],
       ],
       facts: [['10K', 'TPS'], ['20+', 'client teams']],
       vis: () => nums([['10K', 'transactions per second'], ['20+', 'client teams'], ['3 wks', 'to onboard a source, before'], ['4 days', 'to onboard a source, after']])
@@ -682,13 +683,13 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
       when: '2024 · Fulfillment Technology',
       title: 'Breaking a 4,500-line decision tree into condition-specific workflows.',
       rec: [
-        ['Problem', 'A 4,500-line monolithic decision tree, and an audit gap covering 15.2M units a year.'],
-        ['Constraint', 'Changes land on live sites, where a wrong route is expensive to undo.'],
+        ['Problem', 'A 4,500-line monolithic decision tree, and an audit gap covering millions of units a year.'],
+        ['Constraint', 'Routing changes go live across sites, so a bad change has to be reversible without a deploy.'],
         ['Decision', 'Split the tree by item condition and route through a config-driven resolver that fails closed and rolls back with a config change alone.'],
         ['Trade-off', 'Failing closed means an unknown case stops instead of guessing. I chose a visible stop over a silent wrong answer.'],
       ],
-      facts: [['15.2M', 'units a year now covered'], ['20s → 5s', 'workflow latency'], ['43+', 'sites']],
-      vis: () => nums([['4,500', 'lines in the old tree'], ['15.2M', 'units a year now covered'], ['20s → 5s', 'workflow latency'], ['43+', 'North America sites, then worldwide']])
+      facts: [['Audit gap', 'closed'], ['20s → 5s', 'workflow latency'], ['Config-only', 'rollback']],
+      vis: () => nums([['4,500', 'lines in the old tree'], ['20s → 5s', 'workflow latency'], ['Fail-closed', 'routing by default'], ['NA → WW', 'North America first, then worldwide']])
     },
     ins: {
       when: '2021 – 2023 · Halo',
