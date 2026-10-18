@@ -112,6 +112,11 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 @keyframes focus-in { from { filter: blur(28px); opacity: 0.2; transform: scale(1.04); } }
 .hero-copy { position: relative; width: 100%; padding-bottom: clamp(28px, 6vh, 64px); display: flex; justify-content: space-between; align-items: flex-end; gap: 20px 24px; flex-wrap: wrap; }
 .hero-copy .who { font-size: var(--t-s); }
+@media (max-height: 520px) and (orientation: landscape) {
+  .hero { min-height: 340px; }
+  .hero-copy { flex-direction: column; align-items: flex-start; max-width: 50%; }
+  .hero .hero-copy .meta { text-align: left; }
+}
 .hero h1 { font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem); line-height: 1.12; letter-spacing: -0.015em; margin-top: 6px; max-width: 22ch; }
 .hero .meta { font-size: var(--t-xs); color: var(--grey); display: grid; gap: 2px; }
 @media (min-width: 640px) { .hero .meta { text-align: right; } }
@@ -158,7 +163,7 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 
 .term { background: var(--ink); color: var(--paper); border-radius: 14px; padding: 18px 20px; font: 400 0.8125rem/1.7 ui-monospace, "SF Mono", Menlo, Consolas, monospace; overflow-x: auto; }
 .term .ln { white-space: pre; }
-@media (max-width: 520px) { .term { font-size: 0.72rem; padding: 16px; } }
+@media (max-width: 520px) { .term { font-size: 0.75rem; padding: 16px; } }
 .term .c-d { color: var(--mist); } .term .c-b { color: #8FB3F2; } .term .c-r { color: #F0A08F; }
 .term .cap { font-family: var(--f); font-size: var(--t-xs); color: var(--mist); margin-bottom: 10px; display: flex; justify-content: space-between; gap: 12px; }
 
@@ -266,6 +271,7 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
 .fgroup ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
 .fgroup a { font-size: clamp(1.4rem, 1rem + 1.2vw, 2rem); letter-spacing: -0.02em; line-height: 1.15; font-weight: 300; transition: opacity 200ms ease; }
 @media (hover: hover) and (pointer: fine) { .fgroup a:hover { opacity: 0.6; } }
+@media (pointer: coarse), (max-width: 760px) { .fgroup ul { gap: 0; } .fgroup a { display: inline-block; padding-block: 9px; } }
 .fbottom { margin-top: 80px; display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; color: var(--mist); font-size: var(--t-xs); }
 .fbottom svg { width: 64px; height: 64px; color: var(--shade); }
 
@@ -475,15 +481,22 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
     g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return s;
   };
   const sInk = sprite('17,18,21'), sBlue = sprite('49,112,221');
-  let W = 0, H = 0, rotY = 0.6, tx = 0, ty = 0, mx = 0, my = 0;
+  let W = 0, H = 0, rotY = 0.6, tx = 0, ty = 0, mx = 0, my = 0, geo = { R: 0, cx: 0, cy: 0 };
+  const heroCopy = document.querySelector('.hero-copy');
   const size = () => {
     const dpr = Math.min(devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight;
     cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    if (H < 520 && W > H) {               /* phone in landscape: sphere sits beside the copy */
+      geo = { R: Math.min(H * 0.34, W * 0.2), cx: W * 0.72, cy: H * 0.54 };
+    } else {                              /* fill the gap between the nav and the copy */
+      const top = 76, bottom = heroCopy.offsetTop - 12, avail = Math.max(bottom - top, 160);
+      geo = { R: Math.min(W * 0.4, avail * 0.44, H * 0.3), cx: W / 2, cy: top + avail / 2 };
+    }
   };
   const draw = () => {
     ctx.clearRect(0, 0, W, H);
-    const R = Math.min(W * 0.4, H * 0.3), cx = W / 2, cy = H * 0.47;
+    const { R, cx, cy } = geo;
     const cY = Math.cos(rotY), sY = Math.sin(rotY), rx = -0.25 + my, cX = Math.cos(rx), sX = Math.sin(rx);
     const out = [], dens = Math.min(1, 0.55 + R / 600);   /* fewer pixels per point on small screens: thin it out */
     for (const [x, y, z, hot] of pts) {
@@ -514,6 +527,7 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
   };
   size(); draw();
   addEventListener('resize', () => { size(); draw(); });
+  if (document.fonts) document.fonts.ready.then(() => { size(); draw(); });   /* copy height settles once the font loads */
   if (!reduce) {
     requestAnimationFrame(loop);
     addEventListener('pointermove', e => { tx = (e.clientX / innerWidth - 0.5) * 0.6; ty = (e.clientY / innerHeight - 0.5) * 0.3; }, { passive: true });
