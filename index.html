@@ -11,6 +11,11 @@
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#F1F2F4">
 <meta property="og:url" content="https://technomad641.github.io/">
+<meta property="og:image" content="https://technomad641.github.io/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Rajat Singh">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://technomad641.github.io/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%276%27 fill=%27%233170DD%27/%3E%3Cg stroke=%27white%27 stroke-width=%271.6%27 stroke-linecap=%27round%27%3E%3Cpath d=%27M16 5v7M16 20v7M5 16h7M20 16h7M8.2 8.2l4.9 4.9M18.9 18.9l4.9 4.9M23.8 8.2l-4.9 4.9M13.1 18.9l-4.9 4.9%27/%3E%3C/g%3E%3Ccircle cx=%2716%27 cy=%2716%27 r=%272%27 fill=%27white%27/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -130,11 +135,11 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 .lit .w { color: var(--mist); transition: color 300ms ease; }
 .lit.armed .w { color: #6E7178; }
 .lit.armed .w.on { color: var(--paper); }
-.about { display: grid; gap: clamp(40px, 6vw, 72px); }
+.about, .split { display: grid; gap: clamp(40px, 6vw, 72px); }
 .portrait { margin: 0; width: min(100%, 340px); display: grid; gap: 12px; }
 .portrait img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; filter: contrast(1.04); }
 .portrait figcaption { font-size: var(--t-xs); color: var(--mist); }
-@media (min-width: 1000px) { .about { grid-template-columns: minmax(0, 1fr) clamp(240px, 24vw, 340px); align-items: end; } }
+@media (min-width: 1000px) { .about, .split { grid-template-columns: minmax(0, 1fr) clamp(240px, 24vw, 340px); align-items: end; } }
 @media (prefers-reduced-motion: no-preference) {
   .portrait img { clip-path: inset(100% 0 0 0); transition: clip-path 1100ms var(--ease-in-out); }
   .portrait.in img { clip-path: inset(0 0 0 0); }
@@ -263,6 +268,7 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 /* ---------- contact (blue) ---------- */
 .contact { padding-block: clamp(110px, 14vw, 200px); }
 .contact .lbl { color: rgba(255,255,255,0.7); }
+.contact .portrait figcaption { color: rgba(255,255,255,0.7); }
 .contact h2 { font-size: var(--t-xxl); line-height: 0.98; letter-spacing: -0.045em; max-width: 12ch; }
 .contact h2 .two { color: rgba(255,255,255,0.55); }
 .contact .btn.fill { background: #fff; color: var(--blue); border-color: #fff; }
@@ -442,12 +448,18 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
   <section class="band blue contact" id="contact" data-tone="blue">
     <div class="cols">
       <p class="lbl">Contact</p>
-      <div>
+      <div class="split">
+        <div>
         <h2>Building for agents? <span class="two">Let's talk.</span></h2>
         <div class="links" style="margin-top:40px">
           <a class="btn fill" href="https://www.linkedin.com/in/rajat641" target="_blank" rel="noopener">Message on LinkedIn <span class="ar" aria-hidden="true">↗</span></a>
           <a class="btn" href="https://github.com/technomad641" target="_blank" rel="noopener">GitHub <span class="ar" aria-hidden="true">↗</span></a>
         </div>
+        </div>
+        <figure class="portrait">
+          <img src="assets/coast-800.jpg" srcset="assets/coast-480.jpg 480w, assets/coast-800.jpg 800w" sizes="(min-width: 1000px) 340px, min(100vw - 32px, 340px)" width="800" height="1000" alt="Rajat Singh smiling on a coastal cliff, black and white" loading="lazy" decoding="async">
+          <figcaption>Off the clock</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -545,8 +557,8 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
     requestAnimationFrame(loop);
     addEventListener('pointermove', e => { tx = (e.clientX / innerWidth - 0.5) * 0.6; ty = (e.clientY / innerHeight - 0.5) * 0.3; }, { passive: true });
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(cv);
-    const pf = document.getElementById("portrait");
-    new IntersectionObserver(([e], o) => { if (e.isIntersecting) { pf.classList.add("in"); o.disconnect(); } }, { threshold: 0.25 }).observe(pf);
+    const pio = new IntersectionObserver((es, o) => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); o.unobserve(e.target); } }), { threshold: 0.25 });
+    document.querySelectorAll(".portrait").forEach(f => pio.observe(f));
   }
 
   /* ---------- scroll: hero defocus, lit words, nav tone ---------- */
