@@ -130,6 +130,15 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 .lit .w { color: var(--mist); transition: color 300ms ease; }
 .lit.armed .w { color: #6E7178; }
 .lit.armed .w.on { color: var(--paper); }
+.about { display: grid; gap: clamp(40px, 6vw, 72px); }
+.portrait { margin: 0; width: min(100%, 340px); display: grid; gap: 12px; }
+.portrait img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 4px; filter: contrast(1.04); }
+.portrait figcaption { font-size: var(--t-xs); color: var(--mist); }
+@media (min-width: 1000px) { .about { grid-template-columns: minmax(0, 1fr) clamp(240px, 24vw, 340px); align-items: end; } }
+@media (prefers-reduced-motion: no-preference) {
+  .portrait img { clip-path: inset(100% 0 0 0); transition: clip-path 1100ms var(--ease-in-out); }
+  .portrait.in img { clip-path: inset(0 0 0 0); }
+}
 
 /* ---------- work ---------- */
 .work { padding-block: clamp(96px, 12vw, 180px); }
@@ -323,8 +332,12 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
   <section class="band ink statement" data-tone="ink" aria-label="About">
     <div class="cols">
       <p class="lbl">About</p>
-      <div>
+      <div class="about">
         <p class="big lit" id="lit">I design the tool surfaces LLM agents call into, and the event-driven AWS services underneath them. Five years at Amazon, from health insights to fulfillment, built to hold at 10K TPS for 20+ client teams.</p>
+        <figure class="portrait" id="portrait">
+          <img src="assets/portrait-800.jpg" srcset="assets/portrait-480.jpg 480w, assets/portrait-800.jpg 800w" sizes="(min-width: 1000px) 340px, min(100vw - 32px, 340px)" width="800" height="1000" alt="Rajat Singh, black and white portrait outdoors" loading="lazy" decoding="async">
+          <figcaption>Rajat Singh</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -532,6 +545,8 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
     requestAnimationFrame(loop);
     addEventListener('pointermove', e => { tx = (e.clientX / innerWidth - 0.5) * 0.6; ty = (e.clientY / innerHeight - 0.5) * 0.3; }, { passive: true });
     new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(cv);
+    const pf = document.getElementById("portrait");
+    new IntersectionObserver(([e], o) => { if (e.isIntersecting) { pf.classList.add("in"); o.disconnect(); } }, { threshold: 0.25 }).observe(pf);
   }
 
   /* ---------- scroll: hero defocus, lit words, nav tone ---------- */
