@@ -145,6 +145,17 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
   .portrait.in img { clip-path: inset(0 0 0 0); }
 }
 
+.lead-row { margin-top: clamp(96px, 12vw, 180px); }
+.lead-h { font-size: var(--t-l); line-height: 1.15; letter-spacing: -0.015em; font-weight: 400; max-width: 22ch; }
+.lead-h .two { color: var(--shade); }
+.lead { margin-top: clamp(40px, 5vw, 64px); display: grid; gap: 0 40px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 680px) { .lead { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .lead { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.lead > div { border-top: 1px solid var(--rule-d); padding-block: 22px 32px; }
+.lead b { display: block; font-weight: 300; font-size: var(--t-l); letter-spacing: -0.02em; line-height: 1.1; color: var(--paper); }
+.lead h3 { font-size: var(--t-s); font-weight: 500; margin-top: 14px; color: var(--paper); }
+.lead p { color: var(--mist); font-size: var(--t-s); margin-top: 6px; }
+
 /* ---------- work ---------- */
 .work { padding-block: clamp(96px, 12vw, 180px); }
 .center-head { text-align: center; display: grid; justify-items: center; gap: 16px; margin-bottom: clamp(56px, 8vw, 110px); }
@@ -164,14 +175,24 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 @media (hover: hover) and (pointer: fine) { .tab:not([aria-selected="true"]):hover { background: rgba(49, 112, 221, 0.09); } }
 
 .case { margin-top: 40px; display: grid; gap: clamp(32px, 4vw, 64px); grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 1000px) { .case { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 30rem; } }
+@media (min-width: 1000px) { .case { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 60rem; } }
+@media (min-width: 1200px) { .case { min-height: 51rem; } }
+@media (min-width: 1280px) { .case { min-height: 46rem; } }
+@media (min-width: 1400px) { .case { min-height: 43rem; } }
 .case[data-anim] .case-text, .case[data-anim] .case-vis { animation: swap 520ms var(--ease-out) backwards; }
 .case[data-anim] .case-vis { animation-delay: 70ms; }
 @keyframes swap { from { opacity: 0; transform: translateY(10px); filter: blur(3px); } }
 .case-text, .case-vis { min-width: 0; }
 .case .when { font-size: var(--t-xs); color: var(--grey); }
 .case h3 { font-size: var(--t-l); line-height: 1.15; letter-spacing: -0.015em; margin-top: 10px; max-width: 24ch; }
-.case p.body { color: var(--grey); margin-top: 18px; max-width: 34rem; font-size: 1.0625rem; }
+.case .rec { margin: 22px 0 0; max-width: 36rem; }
+.case .rec > div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px 20px; padding: 12px 0; border-top: 1px solid var(--rule-l); }
+.case .rec > div:last-child { border-bottom: 1px solid var(--rule-l); }
+@media (min-width: 560px) { .case .rec > div { grid-template-columns: 6.5rem minmax(0, 1fr); } }
+.case .rec dt { font-size: var(--t-xs); color: var(--grey); padding-top: 0.2em; }
+.case .rec dd { margin: 0; color: var(--grey); font-size: var(--t-s); line-height: 1.55; }
+.case .rec div:nth-child(3) dt { color: var(--blue); }
+.case .rec div:nth-child(3) dd { color: var(--ink); }
 .case .facts { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 26px; font-size: var(--t-s); }
 .case .facts b { font-weight: 500; }
 
@@ -233,6 +254,10 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 .plist .lang { font-size: var(--t-xs); color: var(--mist); grid-column: 1 / -1; }
 .plist .what { color: var(--mist); font-size: var(--t-s); grid-column: 1 / -1; }
 .plist .ar { grid-row: 2; grid-column: 2; }
+.play { margin-top: 28px; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 20px; font-size: var(--t-s); color: var(--mist); }
+.play span { color: var(--shade); margin-right: 4px; }
+.play a { text-decoration: underline; text-decoration-color: var(--shade); text-underline-offset: 4px; padding-block: 10px; transition: color 200ms ease; }
+@media (hover: hover) and (pointer: fine) { .play a:hover { color: var(--paper); } }
 @media (min-width: 960px) {
   .plist a { grid-template-columns: 8rem minmax(0, 1.25fr) minmax(0, 1fr) auto; }
   .plist .lang, .plist .what, .plist .ar { grid-column: auto; grid-row: auto; }
@@ -254,10 +279,6 @@ sup { font-size: 0.55em; vertical-align: 0.8em; line-height: 0; margin-left: 0.0
 .steps .what { font-size: 1.375rem; letter-spacing: -0.01em; line-height: 1.25; }
 .steps .where { color: var(--grey); font-size: var(--t-s); padding-top: 0.25em; }
 .steps li.now .when { color: var(--blue); }
-.creds { margin-top: clamp(64px, 8vw, 110px); display: grid; gap: 36px 48px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 760px) { .creds { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.creds h3 { font-size: 1.5rem; letter-spacing: -0.015em; line-height: 1.2; }
-.creds p { color: var(--grey); font-size: var(--t-s); margin-top: 8px; max-width: 30rem; }
 .stack { margin-top: clamp(64px, 8vw, 110px); }
 .stack dl { margin: 18px 0 0; }
 .stack dl > div { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px 24px; padding: 14px 0; border-top: 1px solid var(--rule-l); }
@@ -346,6 +367,18 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
         </figure>
       </div>
     </div>
+    <div class="cols lead-row" id="lead">
+      <p class="lbl">Beyond the code</p>
+      <div>
+        <h2 class="lead-h">Trusted with the calls <span class="two">that aren't in the code.</span></h2>
+        <div class="lead">
+          <div><b>50+ loops</b><h3>Certified Bar Raiser</h3><p>Selected into Amazon's company-wide interview-quality program, with effective veto authority on hiring decisions.</p></div>
+          <div><b>Sign-off</b><h3>Certified security reviewer</h3><p>I threat-model and certify designs for applications that handle personal data.</p></div>
+          <div><b>56–60%</b><h3>GenAI enablement series</h3><p>Founded an org-wide series that reached over half the org, and reported adoption analytics to senior leadership.</p></div>
+          <div><b>5 → 1</b><h3>Pilot playbook</h3><p>Turned five production postmortems into the org's pilot SOP: kill-switch thresholds, alarm tiers, time-boxed rollback.</p></div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- WORK -->
@@ -375,7 +408,7 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
     <div class="cols">
       <p class="lbl">Open source</p>
       <div>
-        <h2>Things I build after hours. <span class="two">Small, tested, readable in one sitting.</span></h2>
+        <h2>Built in the open. <span class="two">Agent tooling and systems, each small enough to read in one sitting.</span></h2>
         <div class="feature">
           <div>
             <p class="lbl">Featured · JavaScript, React</p>
@@ -404,10 +437,12 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
           <li><a href="https://github.com/technomad641/github-repo-mcp-server" target="_blank" rel="noopener"><span class="lang">TypeScript</span><span class="name">github-repo-mcp-server</span><span class="what">MCP server for your repos, issues, PRs and CI. 13 tools, 3 resources, 3 prompts; repo access is gated by an allowlist.</span><span class="ar" aria-hidden="true">↗</span></a></li>
           <li><a href="https://github.com/technomad641/coding-agent-cli" target="_blank" rel="noopener"><span class="lang">Python</span><span class="name">coding-agent-cli</span><span class="what">A coding agent on the raw Anthropic Messages API in ~1,150 lines. Approval gates, path confinement, MCP client.</span><span class="ar" aria-hidden="true">↗</span></a></li>
           <li><a href="https://github.com/technomad641/klok" target="_blank" rel="noopener"><span class="lang">Python · PyPI</span><span class="name">klok</span><span class="what">Plaintext time tracker with zero dependencies. ~70 commands, 170 tests, CI on Linux, macOS and Windows.</span><span class="ar" aria-hidden="true">↗</span></a></li>
-          <li><a href="https://github.com/technomad641/ScreenCueTime" target="_blank" rel="noopener"><span class="lang">React</span><span class="name">ScreenCueTime</span><span class="what">Fullscreen countdown that fires a cue at zero. Explicit state machine, pure modules, reduced-motion paths.</span><span class="ar" aria-hidden="true">↗</span></a></li>
-          <li><a href="https://github.com/technomad641/play-with-jev" target="_blank" rel="noopener"><span class="lang">Python</span><span class="name">play-with-jev</span><span class="what">A beginner's guide to Jev, a one-pass model that picks typed answers. Includes Snake with Jev choosing every turn.</span><span class="ar" aria-hidden="true">↗</span></a></li>
-          <li><a href="https://github.com/technomad641/Leetcode-hint-coach" target="_blank" rel="noopener"><span class="lang">PWA</span><span class="name">LeetCode Hint Coach</span><span class="what">iPhone-first study app with progressive hints, and a testbed for agents on Bedrock and AgentCore. In progress.</span><span class="ar" aria-hidden="true">↗</span></a></li>
         </ul>
+        <p class="play"><span>Playground</span>
+          <a href="https://github.com/technomad641/ScreenCueTime" target="_blank" rel="noopener">ScreenCueTime</a>
+          <a href="https://github.com/technomad641/play-with-jev" target="_blank" rel="noopener">play-with-jev</a>
+          <a href="https://github.com/technomad641/Leetcode-hint-coach" target="_blank" rel="noopener">LeetCode Hint Coach</a>
+        </p>
       </div>
     </div>
   </section>
@@ -425,12 +460,6 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
           <li><span class="when">2017 – 2019</span><span class="what">Software Engineer</span><span class="where">Kuliza Technologies. Lending platform for 200K+ customers; SQL cut from 25ms to 8ms.</span></li>
           <li><span class="when">2013 – 2017</span><span class="what">B.Tech. Computer Science</span><span class="where">Vellore Institute of Technology</span></li>
         </ol>
-        <div class="creds">
-          <div><h3>Certified Bar Raiser</h3><p>Selected into Amazon's company-wide interview-quality program. 50+ loops with veto authority on hiring.</p></div>
-          <div><h3>Certified security reviewer</h3><p>Reviews for applications handling personal data: threat models and design certification.</p></div>
-          <div><h3>GenAI enablement series</h3><p>Founded an org-wide series that reached 56–60% of the org, with adoption analytics for senior leadership.</p></div>
-          <div><h3>Pilot playbook</h3><p>Wrote the org's pilot SOP from five production postmortems: kill-switch thresholds, alarm tiers, time-boxed rollback.</p></div>
-        </div>
         <div class="stack">
           <p class="lbl">Stack</p>
           <dl>
@@ -598,7 +627,12 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
     mcp: {
       when: '2025 · Fulfillment Technology',
       title: 'An MCP server that lets LLM agents read a 200+ workflow decision engine.',
-      body: 'I designed the tool surface for a TypeScript MCP server over our workflow decision-tree engine. Chains of 2–3 API round-trips collapsed into 9 composite tools, and 100KB graph responses compress into five-line summaries, so each call costs the agent less context. Auth is delegated to an existing MCP server over a stdio child process.',
+      rec: [
+        ['Problem', 'Agents needed to reason over a 200+ workflow decision engine whose APIs were built for people: two or three round-trips per question and 100KB graph payloads.'],
+        ['Constraint', 'Every byte an agent reads is context it can no longer use. Auth already existed in another MCP server.'],
+        ['Decision', 'Shape tools around the questions agents ask, not the endpoints we had: 9 composite tools, responses compressed to five-line summaries, and auth delegated to the existing server over stdio instead of rebuilt.'],
+        ['Trade-off', 'Composite tools are less general than one wrapper per endpoint. I took a narrower surface for cheaper calls and fewer ways for a model to misuse it.'],
+      ],
       facts: [['9', 'composite tools'], ['100KB → 5 lines', 'per response'], ['99 → 45', 'lines of auth code']],
       vis: () => term([
         ['c-d', '# the same idea, in my open-source server'],
@@ -616,7 +650,12 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
     pkg: {
       when: '2024 · Fulfillment Technology',
       title: 'Packaging certification, moved from manual inspection to an image pipeline.',
-      body: 'This test decides whether a product can ship in its own box. I tech-led four engineers to replace manual inspection with an image-capture pipeline. Every hop is retry-safe: duplicate deliveries collapse on an idempotency key, and records expire on their own.',
+      rec: [
+        ['Problem', 'Whether a product can ship in its own box was decided by manual inspection, across 7.2M tests a year.'],
+        ['Constraint', '100K+ workflows a day at sub-second p99, from station hardware that retries and sends duplicates.'],
+        ['Decision', 'Tech-led four engineers on an image-capture pipeline: pre-signed S3 uploads, a queue between intake and decision, idempotency keys on every hop, TTL on every record.'],
+        ['Trade-off', 'The queue adds a hop and more moving parts. In return, bursts are absorbed and every retry is safe.'],
+      ],
       facts: [['100K+', 'workflows a day'], ['7.2M', 'tests a year'], ['−56%', 'cost per test'], ['+173%', 'operator throughput']],
       vis: () => `<div class="flow">${[
         ['capture', 'Station camera', 'image + test id'],
@@ -630,28 +669,48 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
     sig: {
       when: '2024 · Fulfillment Technology',
       title: 'A tier-1 signal ingestion service for 20+ client teams.',
-      body: 'It ingests S3, SNS and API-polling sources at 10K TPS. A three-layer separation with pluggable source interfaces means a new team plugs in a source instead of forking the service.',
+      rec: [
+        ['Problem', '20+ client teams needed signals from S3, SNS and polled APIs. Each new source took three weeks.'],
+        ['Constraint', 'A tier-1 service at 10K TPS, so teams cannot each fork it or patch it in place.'],
+        ['Decision', 'Three layers with pluggable source interfaces. A new source is an implementation of an interface, not a change to the service.'],
+        ['Trade-off', 'The abstraction cost time before the second source existed. It paid back as onboarding fell from three weeks to four days.'],
+      ],
       facts: [['10K', 'TPS'], ['20+', 'client teams']],
       vis: () => nums([['10K', 'transactions per second'], ['20+', 'client teams'], ['3 wks', 'to onboard a source, before'], ['4 days', 'to onboard a source, after']])
     },
     dmg: {
       when: '2024 · Fulfillment Technology',
       title: 'Breaking a 4,500-line decision tree into condition-specific workflows.',
-      body: 'I set the architecture direction for the damage-processing platform: split the monolithic tree by item condition, then shipped a config-driven routing resolver that fails closed and rolls back with a config change alone. Separately, prefetching downstream calls cut a multi-site workflow from 20 seconds to 5, rolled out across North America and then worldwide.',
+      rec: [
+        ['Problem', 'A 4,500-line monolithic decision tree, and an audit gap covering 15.2M units a year.'],
+        ['Constraint', 'Changes land on live sites, where a wrong route is expensive to undo.'],
+        ['Decision', 'Split the tree by item condition and route through a config-driven resolver that fails closed and rolls back with a config change alone.'],
+        ['Trade-off', 'Failing closed means an unknown case stops instead of guessing. I chose a visible stop over a silent wrong answer.'],
+      ],
       facts: [['15.2M', 'units a year now covered'], ['20s → 5s', 'workflow latency'], ['43+', 'sites']],
       vis: () => nums([['4,500', 'lines in the old tree'], ['15.2M', 'units a year now covered'], ['20s → 5s', 'workflow latency'], ['43+', 'North America sites, then worldwide']])
     },
     ins: {
       when: '2021 – 2023 · Halo',
       title: 'Ranking dozens of health insights into three card slots.',
-      body: 'I weighed freshness heuristics and ML preference models, then A/B tested a random-sort baseline that matched the target experience at a fraction of the complexity. It shipped on an event-driven architecture that fires when domain data is complete.',
+      rec: [
+        ['Problem', 'Tens of candidate health insights competing for three card slots on screen.'],
+        ['Options', 'Freshness heuristics, perceived-ranking rules, and ML preference models.'],
+        ['Decision', 'A/B tested a random-sort baseline against the target experience. It matched, so it shipped, on an event-driven architecture that fires when domain data is complete.'],
+        ['Trade-off', 'Gave up a ranker that looked better on paper. The simplest option met the bar at far lower cost to build and run.'],
+      ],
       facts: [['10K', 'TPS'], ['200ms', 'latency bound'], ['3', 'card slots']],
       vis: () => nums([['3', 'slots on screen'], ['10K', 'TPS, engineered for'], ['200ms', 'latency bound'], ['A/B', 'the simple baseline won']])
     },
     srv: {
       when: '2021 – 2023 · Halo',
       title: 'Server-driven surveys that ship without an app release.',
-      body: 'A schema DSL generates typed Kotlin and TypeScript clients. I weighed three storage strategies on versioning and availability, and the persistence layer avoided a customer-data migration. Five senior engineers and a Principal Engineer approved the design.',
+      rec: [
+        ['Problem', 'Every new survey needed an app release, so launches took months.'],
+        ['Options', 'Three storage strategies, weighed on versioning and availability.'],
+        ['Decision', 'Server-driven delivery: a schema DSL that generates typed Kotlin and TypeScript clients, and a persistence layer that avoided a customer-data migration.'],
+        ['Trade-off', 'A DSL is one more thing to own. It kept both clients typed and in sync. Five senior engineers and a Principal Engineer approved the design.'],
+      ],
       facts: [['months → days', 'to launch a survey'], ['Kotlin + TS', 'generated clients']],
       vis: () => nums([['Months', 'to launch, before'], ['Days', 'to launch, after'], ['2', 'typed clients generated'], ['0', 'customer-data migrations']])
     },
@@ -660,7 +719,7 @@ footer.band { padding-block: 56px calc(36px + env(safe-area-inset-bottom, 0px));
   const tabs = [...document.querySelectorAll('#tabs .tab')];
   const show = (k, animate) => {
     const c = cases[k];
-    panel.innerHTML = `<div class="case-text"><p class="when">${c.when}</p><h3>${c.title}</h3><p class="body">${c.body}</p><div class="facts">${c.facts.map(([b, s]) => `<span><b>${b}</b> ${s}</span>`).join('')}</div></div><div class="case-vis">${c.vis()}</div>`;
+    panel.innerHTML = `<div class="case-text"><p class="when">${c.when}</p><h3>${c.title}</h3><dl class="rec">${c.rec.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl><div class="facts">${c.facts.map(([b, s]) => `<span><b>${b}</b> ${s}</span>`).join('')}</div></div><div class="case-vis">${c.vis()}</div>`;
     tabs.forEach(t => { const on = t.dataset.k === k; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
     panel.setAttribute('aria-labelledby', 't-' + k);
     panel.removeAttribute('data-anim');
